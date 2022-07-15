@@ -1,5 +1,5 @@
 from os import environ
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 import pytesseract
 try:
   from PIL import Image
@@ -142,10 +142,10 @@ def documentInput(client, message):
       return
     myMsg = app.send_message(chat_id=message.from_user.id, text=returnAttendance[0], reply_to_message_id=message.id)
     if (returnAttendance[1]==str(1)):
-      app.send_chat_action(chat_id=message.from_user.id, action="upload_document")
+      app.send_chat_action(chat_id=message.from_user.id, action=enums.ChatAction.UPLOAD_DOCUMENT)
       app.send_document(chat_id=message.from_user.id, document=srcTxt, caption="Text Report", reply_to_message_id=myMsg.id)
     if (returnAttendance[2]==str(1)):
-      app.send_chat_action(chat_id=message.from_user.id, action="upload_audio")
+      app.send_chat_action(chat_id=message.from_user.id, action=enums.ChatAction.UPLOAD_AUDIO)
       app.send_audio(chat_id=message.from_user.id, audio=srcMP3, caption="Audio Report", reply_to_message_id=myMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Thanks for using this Bot!\n\nThis Bot is created by **[Jameel Kaisar](tg://user?id=977782841)** (__**Ajmi**__).")
   else:
