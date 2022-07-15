@@ -20,6 +20,10 @@
     },
     "BOT_TOKEN": {
       "description": "Get BOT_TOKEN from https://t.me/BotFather"
+    },
+    "TESSDATA_PREFIX": {
+      "description": "Run 'find -iname tessdata' in Console!",
+      "value": "./.apt/usr/share/tesseract-ocr/4.00/tessdata"
     }
   }
 }
