@@ -23,10 +23,10 @@ def nitAttendance(message, srcImg, srcTxt, srcMP3):
     stdImg = Image.open(srcImg)
 #    app.send_message(chat_id=message.from_user.id, text="**Image Data:**\n" + str(stdImg))
   except Exception as err:
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Unable to Process Image\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Please Resend the Image__")
     return
-  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
   
   tempMsg = app.send_message(chat_id=message.from_user.id, text="Recognizing Image Text...", disable_notification=True)
   try:
@@ -37,10 +37,10 @@ def nitAttendance(message, srcImg, srcTxt, srcMP3):
     imgTxt = pytesseract.image_to_string(stdImg)
 #    imgTxt = "2020dehf2020b$$ItE#  0@#$ .%011hgfgd66"
   except Exception as err:
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Unable to Recognize Image Text\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Please Resend the Image__")
     return
-  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
   
   tempMsg = app.send_message(chat_id=message.from_user.id, text="Processing Image Text...", disable_notification=True)
   imgString = re.sub('[^A-Za-z0-9]+', '', imgTxt)
@@ -60,17 +60,17 @@ def nitAttendance(message, srcImg, srcTxt, srcMP3):
   stdTxt = stdTxt + "\n\nList of Students:\n"
   stdTxt = stdTxt + stdAtt
   returnArray.append(stdTxt)
-  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+  app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
   
   tempMsg = app.send_message(chat_id=message.from_user.id, text="Creating Text Report...", disable_notification=True)
   try:
     with open(srcTxt, mode ='w') as file:
       file.write(stdTxt)
     returnArray.append(str(1))
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
   except Exception as err:
     returnArray.append(str(0))
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Failed to Create Text Report\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Text Report won't be sent__")
   
   tempMsg = app.send_message(chat_id=message.from_user.id, text="Creating Audio Report...", disable_notification=True)
@@ -99,10 +99,10 @@ def nitAttendance(message, srcImg, srcTxt, srcMP3):
           gTTS("Roll Number " + str(i+1), lang='en').write_to_fp(f)
           gTTS(stdNames[i], lang='ur').write_to_fp(f)
     returnArray.append(str(1))
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
   except Exception as err:
     returnArray.append(str(0))
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Unable to Create Audio Report\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Audio Report won't be sent__")
   
   return returnArray
@@ -133,33 +133,33 @@ def documentInput(client, message):
     try:
       srcImg = app.download_media(message)
     except Exception as err:
-      app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
-      app.send_message(chat_id=message.from_user.id, text="Unable to Download Image\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Please Resend the Image__", reply_to_message_id=message.message_id)
+      app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
+      app.send_message(chat_id=message.from_user.id, text="Unable to Download Image\n\n**" + type(err).__name__ + ":**\n" + str(err) + "\n\n__Please Resend the Image__", reply_to_message_id=message.id)
       return
-    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.message_id)
+    app.delete_messages(chat_id=message.from_user.id, message_ids=tempMsg.id)
     returnAttendance = nitAttendance(message, srcImg, srcTxt, srcMP3)
     if (returnAttendance==None):
       return
-    myMsg = app.send_message(chat_id=message.from_user.id, text=returnAttendance[0], reply_to_message_id=message.message_id)
+    myMsg = app.send_message(chat_id=message.from_user.id, text=returnAttendance[0], reply_to_message_id=message.id)
     if (returnAttendance[1]==str(1)):
       app.send_chat_action(chat_id=message.from_user.id, action="upload_document")
-      app.send_document(chat_id=message.from_user.id, document=srcTxt, caption="Text Report", reply_to_message_id=myMsg.message_id)
+      app.send_document(chat_id=message.from_user.id, document=srcTxt, caption="Text Report", reply_to_message_id=myMsg.id)
     if (returnAttendance[2]==str(1)):
       app.send_chat_action(chat_id=message.from_user.id, action="upload_audio")
-      app.send_audio(chat_id=message.from_user.id, audio=srcMP3, caption="Audio Report", reply_to_message_id=myMsg.message_id)
+      app.send_audio(chat_id=message.from_user.id, audio=srcMP3, caption="Audio Report", reply_to_message_id=myMsg.id)
     app.send_message(chat_id=message.from_user.id, text="Thanks for using this Bot!\n\nThis Bot is created by **[Jameel Kaisar](tg://user?id=977782841)** (__**Ajmi**__).")
   else:
-    app.send_message(chat_id=message.from_user.id, text="This is not a Valid Image!", reply_to_message_id=message.message_id)
+    app.send_message(chat_id=message.from_user.id, text="This is not a Valid Image!", reply_to_message_id=message.id)
     app.send_message(chat_id=message.from_user.id, text="Please send a Valid Image")
 
 @app.on_message(filters.photo)
 def photoInput(client, message):
-  app.send_message(chat_id=message.from_user.id, text="This is a Low Quality Image!", reply_to_message_id=message.message_id)
+  app.send_message(chat_id=message.from_user.id, text="This is a Low Quality Image!", reply_to_message_id=message.id)
   app.send_message(chat_id=message.from_user.id, text="Please try sending this Image as Document")
 
 @app.on_message(filters.all)
 def incorrectInput(client, message):
-  app.send_message(chat_id=message.from_user.id, text="Incorrect Input!", reply_to_message_id=message.message_id)
+  app.send_message(chat_id=message.from_user.id, text="Incorrect Input!", reply_to_message_id=message.id)
   app.send_message(chat_id=message.from_user.id, text="Send Attendance Screenshot as Document")
 
 app.run()
