@@ -2,7 +2,7 @@
   "name": "nit-attendance-bot",
   "description": "NIT Attendance Bot",
   "repository": "https://github.com/JameelKaisar/NIT-Attendance-Bot",
-  "stack": "heroku-18",
+  "stack": "heroku-22",
   "buildpacks": [
     {
       "url": "heroku/python"
