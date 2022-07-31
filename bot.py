@@ -111,9 +111,9 @@ api_id = int(environ["API_ID"])
 api_hash = environ["API_HASH"]
 bot_token = environ["BOT_TOKEN"]
 
-dep = Client(":memory:", api_id, api_hash, bot_token=bot_token)
-with dep:
-  dep.send_message(chat_id=977782841, text="Bot Deployed Successfully!")
+# dep = Client(":memory:", api_id, api_hash, bot_token=bot_token)
+# with dep:
+#   dep.send_message(chat_id=977782841, text="Bot Deployed Successfully!")
 
 app = Client(":memory:", api_id, api_hash, bot_token=bot_token)
 
